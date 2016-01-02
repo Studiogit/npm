@@ -1,4 +1,7 @@
-# npm
+npm(1) -- a JavaScript package manager
+==============================
+[![Build Status](https://img.shields.io/travis/npm/npm/master.svg)](https://travis-ci.org/npm/npm)
+## SYNOPSIS
 
 This is just enough info to get you up and running.
 
@@ -6,159 +9,207 @@ Much more info available via `npm help` once it's installed.
 
 ## IMPORTANT
 
-You need node v0.2.3 or higher to run this program.
+**You need node v0.8 or higher to run this program.**
 
-You shouldn't use sudo with it.
+To install an old **and unsupported** version of npm that works on node 0.3
+and prior, clone the git repo and dig through the old tags and branches.
 
-## Simple Install
+**npm is configured to use npm, Inc.'s public package registry at
+<https://registry.npmjs.org> by default.**
 
-To install npm with one command, do this:
+You can configure npm to use any compatible registry you
+like, and even run your own registry. Check out the [doc on
+registries](https://docs.npmjs.com/misc/registry).
 
-    curl http://npmjs.org/install.sh | sh
+Use of someone else's registry may be governed by terms of use. The
+terms of use for the default public registry are available at
+<https://www.npmjs.com>.
 
-If that fails, try this:
+## Super Easy Install
 
-    git clone http://github.com/isaacs/npm.git
-    cd npm
-    make
+npm is bundled with [node](http://nodejs.org/download/).
 
-If you're sitting in the code folder reading this document in your
-terminal, then you've already got the code.  Just do:
+### Windows Computers
 
-    make
+[Get the MSI](http://nodejs.org/download/).  npm is in it.
 
-and npm will install itself.
+### Apple Macintosh Computers
 
-If you don't have make, and don't have curl or git, and ALL you have is
-this code and node, you can do:
+[Get the pkg](http://nodejs.org/download/).  npm is in it.
 
-    node ./cli.js install npm
+### Other Sorts of Unices
 
-## Permission Errors
+Run `make install`.  npm will be installed with node.
 
-If it dies with a "Permission Denied" or EACCESS error, then that probably
-means that you are running node in a shared root-owned location.  You've
-got options.
+If you want a more fancy pants install (a different version, customized
+paths, etc.) then read on.
 
-Using sudo with npm is Very Not Recommended.  Anyone can publish anything,
-and package installations can run arbitrary scripts.
+## Fancy Install (Unix)
 
-### Option 1: Take ownership
+There's a pretty robust install script at
+<https://www.npmjs.com/install.sh>.  You can download that and run it.
 
-Don't do this if you don't know what it does!  If you have software in
-/usr/local that depends on a specific ownership (such as MySQL), then it
-might break if you change its ownership.  Be careful.  Unix does not
-assume you don't know what you're doing!
+Here's an example using curl:
 
-This is convenient if you have a single-user machine.  Run this command
-once, and never use sudo again to install stuff in /usr/local:
+```sh
+curl -L https://www.npmjs.com/install.sh | sh
+```
 
-    sudo chown -R $USER /usr/local/{share/man,bin,lib/node}
+### Slightly Fancier
 
-You could also give your user permission to write into that directory by
-making it group-writable and adding your user to the group that owns it.
+You can set any npm configuration params with that script:
 
-### Option 2: Don't leave $HOME
+```sh
+npm_config_prefix=/some/path sh install.sh
+```
 
-Install node in `$HOME/local` and npm will default to living right alongside
-it.  Follow the steps in this gist: <http://gist.github.com/579814>
+Or, you can run it in uber-debuggery mode:
 
-### Option 3: Customize npm to your heart's content
+```sh
+npm_debug=1 sh install.sh
+```
 
-Create and edit a file at `~/.npmrc`.  This is an ini-formatted file, which
-you can use to set npm configs.  Do something like this to it:
+### Even Fancier
 
-    cat >>~/.npmrc <<NPMRC
-    root = ~/.node_libraries
-    binroot = ~/bin
-    manroot = ~/share/man
-    NPMRC
+Get the code with git.  Use `make` to build the docs and do other stuff.
+If you plan on hacking on npm, `make link` is your friend.
 
-### Option 4: HOLY COW NOT RECOMMENDED!!
+If you've got the npm source code, you can also semi-permanently set
+arbitrary config keys using the `./configure --key=val ...`, and then
+run npm commands by doing `node cli.js <cmd> <args>`.  (This is helpful
+for testing, or running stuff without actually installing npm itself.)
 
-You *can* just use sudo all the time for everything, and ignore the incredibly
-obnoxious warnings telling you that you're insane for doing this.
+## Windows Install or Upgrade
 
-    # you must REALLY trust me to do this!
-    curl http://npmjs.org/install.sh | sudo sh
-    sudo npm ls
-    sudo npm install please-pwn-my-machine-kthx
+You can download a zip file from <https://github.com/npm/npm/releases>, and
+unpack it in the `node_modules\npm\` folder inside node's installation folder.
 
-If this causes horrible things to happen, you can't say I didn't warn you over
-and over again until everyone got sick of hearing about it and told me to shut
-up already.
+To upgrade to npm 2, follow the Windows upgrade instructions in
+the npm Troubleshooting Guide:
 
-It is on the roadmap to make npm do a bunch of chown/setuid stuff when sudoed,
-so eventually it'll actually be *safer* to run as root than as a user account,
-but that's a refactor that is slowly progressing.
+<https://github.com/npm/npm/wiki/Troubleshooting#upgrading-on-windows>
 
-If you have feelings about sudo use and what it should imply, then please go add
-some comments and thoughts on
-[this issue](http://github.com/isaacs/npm/issues/issue/294).
+If that's not fancy enough for you, then you can fetch the code with
+git, and mess with it directly.
 
-## More Fancy Installing
+## Installing on Cygwin
 
-First, get the code.  Maybe use git for this.  That'd be cool.  Very fancy.
-
-The default make target is `install`, which downloads the current stable
-version of npm, and installs that for you.
-
-If you want to install the exact code that you're looking at, the bleeding-edge
-master branch, do this:
-
-    make dev
-
-If you'd prefer to just symlink in the current code so you can hack
-on it, you can do this:
-
-    make link
-
-If you check out the Makefile, you'll see that these are just running npm commands
-at the cli.js script directly.  You can also use npm without ever installing
-it by using `node cli.js` instead of "npm".  Set up an alias if you want, that's
-fine.  (You'll still need read permission to the root/binroot/manroot folders,
-but at this point, you probably grok all that anyway.)
+No.
 
 ## Uninstalling
 
 So sad to see you go.
 
-    npm uninstall npm
-
+```sh
+sudo npm uninstall npm -g
+```
 Or, if that fails,
 
-    make uninstall
+```sh
+sudo make uninstall
+```
+
+## More Severe Uninstalling
+
+Usually, the above instructions are sufficient.  That will remove
+npm, but leave behind anything you've installed.
+
+If you would like to remove all the packages that you have installed,
+then you can use the `npm ls` command to find them, and then `npm rm` to
+remove them.
+
+To remove cruft left behind by npm 0.x, you can use the included
+`clean-old.sh` script file.  You can run it conveniently like this:
+
+```sh
+npm explore npm -g -- sh scripts/clean-old.sh
+```
+
+npm uses two configuration files, one for per-user configs, and another
+for global (every-user) configs.  You can view them by doing:
+
+```sh
+npm config get userconfig   # defaults to ~/.npmrc
+npm config get globalconfig # defaults to /usr/local/etc/npmrc
+```
+
+Uninstalling npm does not remove configuration files by default.  You
+must remove them yourself manually if you want them gone.  Note that
+this means that future npm installs will not remember the settings that
+you have chosen.
 
 ## Using npm Programmatically
 
-If you would like to use npm programmatically, you can do that as of
-version 0.2.6.  It's not very well documented, but it IS rather simple.
+Although npm can be used programmatically, its API is meant for use by the CLI
+*only*, and no guarantees are made regarding its fitness for any other purpose.
+If you want to use npm to reliably perform some task, the safest thing to do is
+to invoke the desired `npm` command with appropriate arguments.
 
-    var npm = require("npm")
-    npm.load(myConfigObject, function (er) {
-      if (er) return handlError(er)
-      npm.commands.install(["some", "args"], function (er, data) {
-        if (er) return commandFailed(er)
-        // command succeeded, and data might have some info
-      })
-      npm.on("log", function (message) { .... })
-    })
+The semantic version of npm refers to the CLI itself, rather than the
+underlying API. _The internal API is not guaranteed to remain stable even when
+npm's version indicates no breaking changes have been made according to
+semver._
 
-See `./cli.js` for an example of pulling config values off of the
-command line arguments.  You may also want to check out `npm help
-config` to learn about all the options you can set there.
+If you _still_ would like to use npm programmatically, it's _possible_. The API
+isn't very well documented, but it _is_ rather simple.
 
-As more features are added for programmatic access to the npm library,
-this section will likely be split out into its own documentation page.
+Eventually, npm will be just a thin CLI wrapper around the modules that it
+depends on, but for now, there are some things that only the CLI can do. You
+should try using one of npm's dependencies first, and only use the API if what
+you're trying to do is only supported by npm itself.
+
+```javascript
+var npm = require("npm")
+npm.load(myConfigObject, function (er) {
+  if (er) return handlError(er)
+  npm.commands.install(["some", "args"], function (er, data) {
+    if (er) return commandFailed(er)
+    // command succeeded, and data might have some info
+  })
+  npm.registry.log.on("log", function (message) { .... })
+})
+```
+
+The `load` function takes an object hash of the command-line configs.
+The various `npm.commands.<cmd>` functions take an **array** of
+positional argument **strings**.  The last argument to any
+`npm.commands.<cmd>` function is a callback.  Some commands take other
+optional arguments.  Read the source.
+
+You cannot set configs individually for any single npm function at this
+time.  Since `npm` is a singleton, any call to `npm.config.set` will
+change the value for *all* npm commands in that process.
+
+See `./bin/npm-cli.js` for an example of pulling config values off of the
+command line arguments using nopt.  You may also want to check out `npm
+help config` to learn about all the options you can set there.
 
 ## More Docs
 
-Check out the [docs](http://github.com/isaacs/npm/blob/master/doc/),
-especially the
-[faq](http://github.com/isaacs/npm/blob/master/doc/faq.md#readme).
+Check out the [docs](https://docs.npmjs.com/),
+especially the [faq](https://docs.npmjs.com/misc/faq).
 
 You can use the `npm help` command to read any of them.
 
 If you're a developer, and you want to use npm to publish your program,
-you should
-[read this](http://github.com/isaacs/npm/blob/master/doc/developers.md#readme)
+you should [read this](https://docs.npmjs.com/misc/developers)
+
+## BUGS
+
+When you find issues, please report them:
+
+* web:
+  <https://github.com/npm/npm/issues>
+
+Be sure to include *all* of the output from the npm command that didn't work
+as expected.  The `npm-debug.log` file is also helpful to provide.
+
+You can also look for isaacs in #node.js on irc://irc.freenode.net.  He
+will no doubt tell you to put the output in a gist or email.
+
+## SEE ALSO
+
+* npm(1)
+* npm-faq(7)
+* npm-help(1)
+* npm-index(7)
